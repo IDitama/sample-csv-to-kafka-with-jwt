@@ -13,15 +13,17 @@ import io.smallrye.jwt.build.JwtClaimsBuilder;
 import priv.ilyan.model.Role;
 
 public class Token {
-    public static String generateToken(String username, Set<Role> roles, Long duration, String issuer) throws Exception {
+	public static String generateToken(String username, Set<Role> roles, Long duration, String issuer)
+			throws Exception {
 		String privateKeyLocation = "/private.pem";
 		PrivateKey privateKey = readPrivateKey(privateKeyLocation);
-		
+
 		JwtClaimsBuilder claimsBuilder = Jwt.claims();
 		long currentTimeInSecs = currentTimeInSecs();
-		
+
 		Set<String> groups = new HashSet<>();
-		for (Role role : roles) groups.add(role.toString());
+		for (Role role : roles)
+			groups.add(role.toString());
 
 		claimsBuilder.issuer(issuer);
 		claimsBuilder.subject(username);
@@ -48,7 +50,7 @@ public class Token {
 		return kf.generatePrivate(keySpec);
 	}
 
-   public static byte[] toEncodedBytes(final String pemEncoded) {
+	public static byte[] toEncodedBytes(final String pemEncoded) {
 		final String normalizedPem = removeBeginEnd(pemEncoded);
 		return Base64.getDecoder().decode(normalizedPem);
 	}

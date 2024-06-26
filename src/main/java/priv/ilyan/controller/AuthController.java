@@ -20,18 +20,23 @@ import priv.ilyan.model.User;
 @Path("/auth")
 public class AuthController {
 
-    @Inject
-    Encoder encoder;
-    @ConfigProperty(name = "custom.quarkusjwt.jwt.duration") public Long duration;
-	@ConfigProperty(name = "mp.jwt.verify.issuer") public String issuer;
+	@Inject
+	Encoder encoder;
+	@ConfigProperty(name = "custom.quarkusjwt.jwt.duration")
+	public Long duration;
+	@ConfigProperty(name = "mp.jwt.verify.issuer")
+	public String issuer;
 
 	@PermitAll
-	@POST @Path("/login") @Produces(MediaType.APPLICATION_JSON)
+	@POST
+	@Path("/login")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response login(AuthRequest authRequest) {
 		User u = User.findByUsername(authRequest.getUsername());
 		if (u != null && u.password.equals(encoder.encode(authRequest.getPassword()))) {
 			try {
-				return Response.ok(new AuthResponse(Token.generateToken(u.username, u.roles, duration, issuer))).build();
+				return Response.ok(new AuthResponse(Token.generateToken(u.username, u.roles, duration, issuer)))
+						.build();
 			} catch (Exception e) {
 				return Response.status(Status.UNAUTHORIZED).build();
 			}

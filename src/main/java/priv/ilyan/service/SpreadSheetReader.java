@@ -28,13 +28,13 @@ public class SpreadSheetReader {
 
     Jsonb jsonBuilder = JsonbBuilder.create();
 
-    public void readAndPrepare(File fileInput){
+    public void readAndPrepare(File fileInput) {
         try {
             XSSFWorkbook workbook = new XSSFWorkbook(fileInput);
             XSSFSheet sheet = workbook.getSheetAt(0);
             List<List<Object>> listData = new ArrayList<>();
             for (int idx = 0; idx < sheet.getPhysicalNumberOfRows(); idx++) {
-                XSSFRow row =  sheet.getRow(idx);
+                XSSFRow row = sheet.getRow(idx);
                 List<Object> temp = new ArrayList<>();
                 for (int i = 0; i < row.getPhysicalNumberOfCells(); i++) {
                     temp.add(row.getCell(i).toString());

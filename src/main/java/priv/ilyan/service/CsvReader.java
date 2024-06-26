@@ -10,7 +10,6 @@ import javax.json.bind.JsonbBuilder;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-
 @Singleton
 public class CsvReader {
 

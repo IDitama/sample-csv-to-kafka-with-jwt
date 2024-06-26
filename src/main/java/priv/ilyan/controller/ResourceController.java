@@ -32,7 +32,6 @@ public class ResourceController {
     @Inject
     SpreadSheetReader spreadSheetReader;
 
-
     @GET
     @Path("/free-access")
     @Produces(MediaType.APPLICATION_JSON)
@@ -64,15 +63,17 @@ public class ResourceController {
     public Response upload(@MultipartForm FileUploadInput input) throws IOException {
         log.info("File name > " + input.file.fileName());
 
-        if(input.file.fileName().endsWith(".csv")){
+        if (input.file.fileName().endsWith(".csv")) {
             csvReader.readAndPrepare(Files.readString(input.file.uploadedFile()));
+            return Response.ok(new ResourceResponse("CSV file sudah diterima dan diteruskan ke kafka")).build();
         } else if (input.file.fileName().endsWith(".xlsx")) {
             spreadSheetReader.readAndPrepare(input.file.filePath().toFile());
+            return Response.ok(new ResourceResponse("XLSX file sudah diterima dan diteruskan ke kafka")).build();
         }
-        return Response.ok(new ResourceResponse("Content for user or admin")).build();
+        return Response.ok(new ResourceResponse("program ini hanya menerima input file .csv and .xlsx")).build();
     }
 
-    public static class FileUploadInput{
+    public static class FileUploadInput {
         @FormParam("file")
         public FileUpload file;
     }
